@@ -2,4 +2,5 @@
 trigger: always_on
 ---
 
-Generate implement.md before start to code, or change something
+Đưa cho tôi bản kế hoạch xem trước, tôi đồng ý mới được làm
+làm xong đưa cho tôi bản kết quả, giải thích những thứ đã l
