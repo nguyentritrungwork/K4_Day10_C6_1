@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
+sys.stdout.reconfigure(encoding='utf-8')
 
 import pandas as pd
 from core.config import load_settings
