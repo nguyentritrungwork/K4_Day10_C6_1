@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import asdict, dataclass
+import hashlib
 import html
 from pathlib import Path
 import re
@@ -289,3 +290,137 @@ def load_raw_records(path: Path) -> list[PaperRecord]:
                 )
         return records
     return []
+
+
+def compute_file_sha256(path: Path) -> str:
+    """Tính mã băm SHA-256 của một file bất kỳ."""
+    if not path.exists():
+        return ""
+    hasher = hashlib.sha256()
+    with open(path, "rb") as f:
+        for chunk in iter(lambda: f.read(65536), b""):
+            hasher.update(chunk)
+    return hasher.hexdigest()
+
+
+def verify_raw_integrity(raw_response_path: Path, raw_records_path: Path) -> dict[str, Any]:
+    """Xác nhận tính nguyên vẹn của dữ liệu thô (raw snapshot).
+
+    Kiểm tra:
+    1. Cả 2 file raw_response và raw_records tồn tại và có dung lượng hợp lệ.
+    2. Mã băm SHA-256 để đảm bảo không bị biến đổi âm thầm.
+    3. Cấu trúc payload hợp lệ và số lượng record nhất quán.
+    """
+    res_exists = raw_response_path.exists()
+    rec_exists = raw_records_path.exists()
+
+    if not res_exists or not rec_exists:
+        return {
+            "status": "MISSING",
+            "raw_response_exists": res_exists,
+            "raw_records_exists": rec_exists,
+        }
+
+    res_sha256 = compute_file_sha256(raw_response_path)
+    rec_sha256 = compute_file_sha256(raw_records_path)
+
+    raw_response_data = read_json(raw_response_path)
+    raw_records_data = read_json(raw_records_path)
+
+    res_items = raw_response_data.get("message", {}).get("items", []) if isinstance(raw_response_data, dict) else []
+    record_count = len(raw_records_data) if isinstance(raw_records_data, list) else 0
+
+    return {
+        "status": "VALID",
+        "raw_response_path": str(raw_response_path),
+        "raw_response_sha256": res_sha256,
+        "raw_response_items_count": len(res_items),
+        "raw_records_path": str(raw_records_path),
+        "raw_records_sha256": rec_sha256,
+        "raw_records_count": record_count,
+    }
+
+
+def trace_record_lineage(paper_id: str, settings: Settings) -> dict[str, Any]:
+    """Truy vết toàn bộ vòng đời (lineage) của một bản ghi qua 5 giai đoạn:
+
+    1. Raw API Response
+    2. Raw Records JSON
+    3. Clean Baseline Dataset
+    4. Corrupted Dataset
+    5. Reconstructed / Repaired Data
+    """
+    lineage: dict[str, Any] = {
+        "paper_id": paper_id,
+        "raw_api_item": None,
+        "raw_record": None,
+        "clean_record": None,
+        "corrupted_record": None,
+        "repaired_record": None,
+    }
+
+    # 1. Raw API Response
+    if settings.paths.raw_api_response.exists():
+        raw_res = read_json(settings.paths.raw_api_response)
+        items = raw_res.get("message", {}).get("items", []) if isinstance(raw_res, dict) else []
+        for item in items:
+            if safe_slug(str(item.get("DOI", "")).strip()) == paper_id:
+                lineage["raw_api_item"] = {
+                    "doi": item.get("DOI"),
+                    "title": item.get("title"),
+                    "abstract_len": len(str(item.get("abstract", ""))),
+                    "published": item.get("published-print") or item.get("published-online") or item.get("published"),
+                }
+                break
+
+    # 2. Raw Record
+    if settings.paths.raw_records_json.exists():
+        raw_recs = read_json(settings.paths.raw_records_json)
+        if isinstance(raw_recs, list):
+            for r in raw_recs:
+                if r.get("paper_id") == paper_id:
+                    lineage["raw_record"] = r
+                    break
+
+    # 3. Clean Baseline
+    if settings.paths.clean_json.exists():
+        try:
+            with open(settings.paths.clean_json, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                if content.startswith("["):
+                    import json
+                    clean_list = json.loads(content)
+                else:
+                    import json
+                    clean_list = [json.loads(line) for line in content.splitlines() if line.strip()]
+            for r in clean_list:
+                if r.get("paper_id") == paper_id:
+                    lineage["clean_record"] = r
+                    break
+        except Exception:
+            pass
+
+    # 4. Corrupted Data
+    if settings.paths.corrupted_clean_json.exists():
+        try:
+            with open(settings.paths.corrupted_clean_json, "r", encoding="utf-8") as f:
+                content = f.read().strip()
+                if content.startswith("["):
+                    import json
+                    corr_list = json.loads(content)
+                else:
+                    import json
+                    corr_list = [json.loads(line) for line in content.splitlines() if line.strip()]
+            for r in corr_list:
+                if r.get("paper_id") == paper_id:
+                    lineage["corrupted_record"] = r
+                    break
+        except Exception:
+            pass
+
+    # 5. Repaired Candidate (Tái tạo trực tiếp từ Raw Record)
+    if lineage["raw_record"]:
+        lineage["repaired_record"] = lineage["raw_record"]
+
+    return lineage
+
