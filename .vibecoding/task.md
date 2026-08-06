@@ -1,0 +1,1 @@
+giờ tôi muốn merge code từ nhánh của tôi vào nhánh chính, rồi ra nhánh chính code
