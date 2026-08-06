@@ -1,6 +1,6 @@
-# Task AI — Translate result.md to Vietnamese
+# Task AI - Checkpoint 2: Test set, RAG index & Agent smoke test
 
 ## Tasks
-- [x] Read the user's request to translate `result.md` back to Vietnamese.
-- [x] Translate the contents of `result.md` to Vietnamese while keeping the technical details accurate (e.g., mentioning `text-embedding-3-small`).
-- [x] Update `task-ai.md` and commit the change.
+- [ ] Build Baseline Index: Run `LocalEmbeddingIndex.build()` to create the embeddings and Chroma collection from the clean dataset (`papers_clean.json`).
+- [ ] Test retrieval: Run `semantic_search` and `lookup` with the prepared queries to ensure the system returns the correct documents.
+- [ ] Build Agent: Implement the agent and test it using the search tool to answer factual questions.

@@ -1,26 +1,21 @@
-# Kết quả Kiểm tra Dữ liệu trước khi Index (Role 4 - CP0)
+# Kết quả: Chuẩn bị Script Test cho Checkpoint 2
 
-Theo yêu cầu kiểm tra dữ liệu thật trước khi đưa vào ChromaDB, tôi đã trích xuất dữ liệu từ pipeline làm sạch (`data/clean/papers_clean.json`) và xác nhận các điểm sau:
+Theo đúng mong muốn "tự test" của bạn, tôi đã không tự động chạy code mà thay vào đó đã tạo sẵn một file test script hoàn chỉnh cho Checkpoint 2. 
 
-## 1. Đánh giá `text_for_embedding` thật
-Dữ liệu được nối rất gọn gàng, không bị rỗng và không bị lặp từ vô ích. Định dạng hiển thị rất rõ ràng cho LLM và mô hình nhúng.
+Bạn có thể tự chạy và kiểm chứng nghiệm thu Baseline, RAG index, cũng như Agent smoke test.
 
-**Ví dụ một mẫu thật:**
-```text
-Title: Hi-RAG: A Hierarchical Retrieval-Augmented Generation Framework...
-Summary: ABSTRACT As tool repositories for Large Language Model (LLM) agents grow...
-Authors: Wei Tian, Yuhao Zhou
-Categories: 
+## Hướng dẫn Test
+Tôi đã tạo file `script/test_cp2.py`. Script này sẽ:
+1. Đọc dữ liệu từ `papers_clean.json` (kết quả của CP1).
+2. Gọi `LocalEmbeddingIndex.build()` để tạo embeddings và lưu vào collection `papers-baseline` trên ChromaDB.
+3. Test chức năng truy xuất với 1 paper cụ thể (`exact lookup`) và truy vấn ngữ nghĩa (`semantic_search`).
+4. Khởi tạo Agent và đặt các câu hỏi factual (ví dụ: tác giả là ai, năm xuất bản) để kiểm tra xem Agent có dùng tool search không.
+
+### Cách chạy:
+Bạn hãy mở terminal trong thư mục gốc của project (nơi đã activate môi trường ảo, vd `.venv`) và chạy lệnh sau:
+
+```bash
+python script/test_cp2.py
 ```
-- **Nhận xét:** Đủ `Title` và `Summary`. Cách phân tách bằng newline (`\n`) và prefix (`Title: `, `Summary: `) giúp bảo toàn ngữ nghĩa tốt nhất cho mô hình `text-embedding-3-small` của OpenAI.
 
-## 2. Xác nhận cột trong DataFrame
-DataFrame hiện tại chứa chính xác các cột cần thiết cho việc map vào index:
-- **ID & Text:** `paper_id`, `title`, `text_for_embedding` (sẽ dùng làm `content`).
-- **Metadata:** Đầy đủ `published`, `authors_joined`, `categories_joined`, `summary`, `abs_url`, `pdf_url`.
-- **Cột helper:** `age_days`, `summary_chars` đều đã được tính toán đầy đủ.
-
-## 3. Chuẩn bị config index từ clean path
-Thay vì gọi lệnh `collection.add(...)` (build final collection), chúng ta hoàn toàn có thể test việc map DataFrame thành cấu trúc Document của Index bằng phương thức tĩnh `LocalEmbeddingIndex._build_documents(df)`.
-
-Mọi cấu hình từ `Settings` (bao gồm `openai_api_key` và model `text-embedding-3-small`) cùng định dạng metadata đều đã tương thích 100% với file `clean_json`. Dữ liệu cấu trúc hoàn toàn khỏe mạnh và sẵn sàng để chạy `LocalEmbeddingIndex.build()` khi bạn quyết định tiến hành.
+Chúc bạn test thành công! Nếu có lỗi hay vấn đề gì trong lúc test, hãy báo lại để tôi hỗ trợ nhé.
