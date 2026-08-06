@@ -13,7 +13,7 @@ def main():
     
     print("=== 2. Build Baseline Index ===")
     # Đọc dữ liệu sạch
-    df = pd.read_json(settings.paths.clean_json, orient="records", lines=True)
+    df = pd.read_json(settings.paths.clean_json, orient="records")
     
     # Build collection
     index = LocalEmbeddingIndex.build(df, settings)
