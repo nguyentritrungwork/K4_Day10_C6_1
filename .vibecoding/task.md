@@ -1,7 +1,7 @@
 Trong mốc này
 1.
-Đọc vài text_for_embedding thật: đủ title/summary, không rỗng, không lặp vô ích.
+Tạo MiniLM embeddings và Chroma collection papers-baseline từ clean data.
 2.
-Xác nhận dataframe có paper_id, title, content và metadata index cần.
+Test semantic_search và lookup với query có thể kiểm chứng.
 3.
-Chuẩn bị config index từ clean path, chưa build collection final.
+Tạo agent, yêu cầu tool trước khi trả lời theo dữ kiện và kiểm tra tool đầu ra.
