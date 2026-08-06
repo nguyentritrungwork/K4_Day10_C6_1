@@ -1,0 +1,43 @@
+{
+  "checkpoint": 6,
+  "role": "Role 5 - Evaluation Owner",
+  "status": "completed",
+  "test_set_path": "data/eval/test_set.json",
+  "metrics": {
+    "baseline": {
+      "samples": 15,
+      "retrieval_hit_rate": 1.0,
+      "mean_token_f1": 1.0,
+      "judge_accuracy": 1.0,
+      "mean_judge_score": 5.0
+    },
+    "corrupted": {
+      "samples": 15,
+      "retrieval_hit_rate": 1.0,
+      "mean_token_f1": 0.9333333333333333,
+      "judge_accuracy": 0.9333333333333333,
+      "mean_judge_score": 4.733333333333333
+    },
+    "repaired": {
+      "samples": 15,
+      "retrieval_hit_rate": 1.0,
+      "mean_token_f1": 1.0,
+      "judge_accuracy": 1.0,
+      "mean_judge_score": 5.0
+    }
+  },
+  "recovery_delta": {
+    "mean_token_f1": 0.0666666666666667,
+    "judge_accuracy": 0.0666666666666667,
+    "mean_judge_score": 0.2666666666666666
+  },
+  "key_recovered_case": {
+    "id": "q12",
+    "paper_id": "10-3390-buildings16132637",
+    "baseline_answer": "2026-07-02T00:00:00Z",
+    "corrupted_answer": "1999-07-02T00:00:00Z",
+    "repaired_answer": "2026-07-02T00:00:00Z",
+    "corruption_type": "stale_date",
+    "repaired_judge_correct": true
+  }
+}

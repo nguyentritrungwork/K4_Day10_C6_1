@@ -1,0 +1,55 @@
+{
+  "checkpoint": 6,
+  "role": "Role 6 - Observability Owner",
+  "status": "completed",
+  "artifacts_checked": {
+    "baseline_quality": "data/quality/baseline_quality.json",
+    "corrupted_quality": "data/quality/corrupted_quality.json",
+    "repaired_quality": "data/quality/repaired_quality.json",
+    "baseline_freshness": "data/quality/freshness_report.json",
+    "corrupted_freshness": "data/quality/corrupted_freshness.json",
+    "repaired_freshness": "data/quality/repaired_freshness.json",
+    "comparison_report": "data/reports/corruption_report.md"
+  },
+  "quality_recovery": {
+    "baseline_failed_checks": 0,
+    "corrupted_failed_checks": 3,
+    "repaired_failed_checks": 0,
+    "baseline_is_valid": true,
+    "corrupted_is_valid": false,
+    "repaired_is_valid": true,
+    "paper_id_duplicate_rows": {
+      "baseline": 0,
+      "corrupted": 2,
+      "repaired": 0
+    },
+    "summary_missing": {
+      "baseline": 0,
+      "corrupted": 1,
+      "repaired": 0
+    }
+  },
+  "freshness_recovery": {
+    "baseline_oldest_published": "2026-02-12T00:00:00+00:00",
+    "corrupted_oldest_published": "1999-07-02T00:00:00+00:00",
+    "repaired_oldest_published": "2026-02-12T00:00:00+00:00",
+    "note": "stale_rows remains 0 because current freshness logic uses age_days; oldest_published shows the stale_date anomaly."
+  },
+  "metric_recovery_link": {
+    "mean_token_f1": {
+      "baseline": 1.0,
+      "corrupted": 0.9333333333333333,
+      "repaired": 1.0
+    },
+    "judge_accuracy": {
+      "baseline": 1.0,
+      "corrupted": 0.9333333333333333,
+      "repaired": 1.0
+    },
+    "mean_judge_score": {
+      "baseline": 5.0,
+      "corrupted": 4.733333333333333,
+      "repaired": 5.0
+    }
+  }
+}
