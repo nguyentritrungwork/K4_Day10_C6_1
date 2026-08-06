@@ -24,7 +24,7 @@ def main():
     # Chuẩn bị một paper có trong data (ví dụ)
     sample_title = df.iloc[0]["title"]
     
-    print(f"\n[Lookup Test] Tiêu đề: {sample_title}")
+    print(f"\n[Lookup Test] Title: {sample_title}")
     exact_match = index.lookup(sample_title)
     if exact_match:
         print("-> FOUND EXACT MATCH!")
