@@ -1,0 +1,44 @@
+{
+  "source": "manual role 5 evaluation from corrupted artifacts",
+  "official_corrupted_metrics_available": false,
+  "official_corrupted_answers_available": false,
+  "test_set_path": "data/eval/test_set.json",
+  "corrupted_dataset_path": "data/clean/papers_clean_corrupted.json",
+  "corruption_log_path": "data/results/corruption_log.json",
+  "baseline": {
+    "samples": 15,
+    "retrieval_hit_rate": 1.0,
+    "mean_token_f1": 1.0,
+    "judge_accuracy": 1.0,
+    "mean_judge_score": 5.0
+  },
+  "corrupted_manual_estimate": {
+    "samples": 15,
+    "retrieval_hit_rate": 1.0,
+    "mean_token_f1": 0.9333333333333333,
+    "judge_accuracy": 0.9333333333333333,
+    "mean_judge_score": 4.733333333333333
+  },
+  "delta_vs_baseline": {
+    "retrieval_hit_rate": 0.0,
+    "mean_token_f1": -0.0666666666666667,
+    "judge_accuracy": -0.0666666666666667,
+    "mean_judge_score": -0.2666666666666666
+  },
+  "impacted_cases": [
+    {
+      "id": "q12",
+      "question_type": "date",
+      "paper_id": "10-3390-buildings16132637",
+      "baseline_ground_truth": "2026-07-02T00:00:00Z",
+      "corrupted_value": "1999-07-02T00:00:00Z",
+      "corruption_type": "stale_date",
+      "expected_effect": "date answer becomes incorrect while retrieval can still hit the correct document"
+    }
+  ],
+  "notes": [
+    "This is not a replacement for data/results/corrupted_metrics.json from the official pipeline.",
+    "Role 1 still needs to implement/run corruption_flow.py or otherwise produce official corrupted_metrics.json and corrupted_answers.json.",
+    "The fixed test set from checkpoint 2 was reused for this analysis."
+  ]
+}
