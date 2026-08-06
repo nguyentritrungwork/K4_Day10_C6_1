@@ -1,0 +1,1 @@
+Take on Role 4 (Eval & Observe) for Day 10 Data Pipeline Lab. Start with Checkpoint 0 (CP0) tasks.
