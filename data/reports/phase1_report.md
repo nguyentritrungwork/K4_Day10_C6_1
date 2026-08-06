@@ -12,11 +12,25 @@ This report summarizes the baseline clean-data pipeline, including source ingest
 | max_results | 24 |
 | raw_record_count | 24 |
 | clean_row_count | 24 |
-| raw_records_path | D:\K4_Day10_C6_1\data\raw\crossref_records.json |
-| clean_csv | D:\K4_Day10_C6_1\data\clean\papers_clean.csv |
-| clean_json | D:\K4_Day10_C6_1\data\clean\papers_clean.json |
-| evaluation_test_set | D:\K4_Day10_C6_1\data\eval\test_set.json |
-| embeddings_manifest | D:\K4_Day10_C6_1\data\embeddings\papers_embeddings.json |
+| raw_records_path | E:\Downloads\Learn_IT\VinUni\Unit_10\K4_Day10_C6_1\data\raw\crossref_records.json |
+| clean_csv | E:\Downloads\Learn_IT\VinUni\Unit_10\K4_Day10_C6_1\data\clean\papers_clean.csv |
+| clean_json | E:\Downloads\Learn_IT\VinUni\Unit_10\K4_Day10_C6_1\data\clean\papers_clean.json |
+| evaluation_test_set | E:\Downloads\Learn_IT\VinUni\Unit_10\K4_Day10_C6_1\data\eval\test_set.json |
+| embeddings_manifest | E:\Downloads\Learn_IT\VinUni\Unit_10\K4_Day10_C6_1\data\embeddings\papers_embeddings.json |
+
+## Artifact Checklist
+
+| Field | Value |
+| --- | --- |
+| raw_records_path | exists |
+| clean_csv | exists |
+| clean_json | exists |
+| evaluation_test_set | exists |
+| embeddings_manifest | exists |
+| baseline_metrics | exists |
+| baseline_answers | exists |
+| quality_report | exists |
+| freshness_report | exists |
 
 ## Retrieval & QA Metrics
 
@@ -41,6 +55,7 @@ This report summarizes the baseline clean-data pipeline, including source ingest
 | duplicate_paper_id_rows | 0 |
 | summary_missing_rows | 0 |
 | text_for_embedding_missing | 0 |
+| stale_rows | 0 |
 
 ## Freshness Summary
 
@@ -54,8 +69,20 @@ This report summarizes the baseline clean-data pipeline, including source ingest
 | freshness_threshold_days | 180 |
 | is_fresh | True |
 
+## Embedding Index Audit
+
+| Field | Value |
+| --- | --- |
+| embedding_manifest_documents | 24 |
+| embedding_manifest_collection | papers-baseline |
+| embedding_manifest_model | text-embedding-3-small |
+| chroma_collection | papers-baseline |
+| chroma_document_count | 24 |
+| counts_match_clean_data | True |
+| audit_warning | manifest_persist_path_differs_from_current_settings |
+
 ## Recommendations
 
-- Review the baseline quality and freshness signals to confirm whether the clean dataset is production-ready.
+- Treat this report as the baseline evidence pack for comparison with corrupted and repaired runs.
 - Use the same `data/eval/test_set.json` for baseline, corrupted, and repaired evaluations to keep comparisons valid.
-- Investigate any failed quality checks before progressing to corruption and repair flows.
+- Regenerate embedding artifacts if manifest paths or model names do not match the current project settings.
