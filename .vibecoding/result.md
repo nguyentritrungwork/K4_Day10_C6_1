@@ -1,57 +1,57 @@
-# Giải thích kết quả và Ý nghĩa các việc Role 4 làm trong CP0
+# Explanation of Role 4 Tasks in CP0 (RAG & Agent)
 
-Dưới đây là phần giải thích chi tiết về mặt kỹ thuật cho những nhiệm vụ mà Role 4 (RAG & Agent) cần nắm bắt trong Checkpoint 0, cũng như phân tích các đoạn code tương ứng.
+This document provides a technical explanation of the tasks required for Role 4 in Checkpoint 0, along with an analysis of the corresponding code.
 
 ---
 
-## 1. Đọc `LocalEmbeddingIndex`, `embeddings`, `agent` để nắm Input/Output
+## 1. Understanding `LocalEmbeddingIndex`, `embeddings`, and `agent`
 
-### a. `embeddings.py` (Mô hình nhúng - Embedding)
-- **Code làm gì?** File này định nghĩa class `MiniLMEmbeddings` bọc lại thư viện `sentence-transformers`.
+### a. `embeddings.py` (Embedding Model)
+- **What it does:** This file configures the embedding model used to convert text into vector representations.
 - **Input/Output:**
-  - Hàm `embed_documents(texts)`: Nhận vào một list các chuỗi văn bản (ví dụ: `text_for_embedding` của từng bài báo) và trả về một ma trận các vector nhúng (để lưu vào database).
-  - Hàm `embed_query(text)`: Nhận vào câu hỏi của người dùng và chuyển thành 1 vector duy nhất để mang đi so sánh.
-- **Ý nghĩa:** Đây là "bộ não" chuyển đổi ngôn ngữ tự nhiên thành các con số toán học (vector). Code sử dụng `@lru_cache` để đảm bảo mô hình (model) chỉ được tải lên bộ nhớ đúng 1 lần, giúp tiết kiệm RAM và tăng tốc độ.
+  - `embed_documents(texts)`: Takes a list of strings (e.g., the `text_for_embedding` from each paper) and returns a matrix of embedding vectors to be stored in the database.
+  - `embed_query(text)`: Takes a user query string and converts it into a single vector for similarity comparison.
+- **Significance:** This is the core component that bridges natural language and mathematical representations. Recently, we updated this to use `langchain_openai.OpenAIEmbeddings` (specifically `text-embedding-3-small`) to leverage high-quality OpenAI embeddings instead of the local MiniLM model.
 
-### b. `index.py` (`LocalEmbeddingIndex` - Cơ sở dữ liệu Vector)
-- **Code làm gì?** File này quản lý vòng đời của ChromaDB (tạo, lưu, tìm kiếm dữ liệu).
-- **Quá trình Build (Input/Output):**
-  - **Input:** Hàm `build()` nhận vào một `pd.DataFrame` (dữ liệu sạch từ bước trước).
-  - **Xử lý:** Code duyệt qua DataFrame, nối các trường cần thiết thành `text_for_embedding` và trích xuất `metadata`. Sau đó đẩy toàn bộ vào ChromaDB (dùng cosine similarity).
-  - **Output:** Trả ra đối tượng `LocalEmbeddingIndex` và lưu file `manifest.json` ghi lại thông tin database.
-- **Quá trình Search & Lookup:**
-  - Hàm `search(query, top_k)`: Dùng vector của câu hỏi để tìm `top_k` tài liệu gần giống nhất trong ChromaDB. Output là danh sách `SearchResult` (chứa `score`, `paper_id`, `content`). Điểm `score` được tính bằng `1.0 - distance` (distance càng nhỏ thì score càng cao).
-  - Hàm `lookup(value)`: Tìm chính xác 1 bài báo dựa vào ID hoặc Tiêu đề (nhờ 2 dictionary `documents_by_paper_id` và `documents_by_title` được nạp sẵn lên RAM).
+### b. `index.py` (`LocalEmbeddingIndex` - Vector Database)
+- **What it does:** Manages the lifecycle of ChromaDB (creating, storing, and searching data).
+- **Build Process (Input/Output):**
+  - **Input:** The `build()` method receives a `pd.DataFrame` containing the cleaned data.
+  - **Process:** It iterates through the DataFrame, processes the `text_for_embedding` and extracts `metadata`. It then pushes everything into ChromaDB.
+  - **Output:** Returns a `LocalEmbeddingIndex` instance and saves a `manifest.json` file to track the database configuration.
+- **Search & Lookup:**
+  - `search(query, top_k)`: Uses the query's vector to find the top `k` most similar documents in ChromaDB. Returns a list of `SearchResult` objects.
+  - `lookup(value)`: Finds an exact paper match based on ID or Title using pre-loaded in-memory dictionaries (`documents_by_paper_id` and `documents_by_title`).
 
-### c. `agent.py` (Tác tử LLM)
-- **Code làm gì?** Tạo ra một Agent thông minh sử dụng LangChain.
+### c. `agent.py` (LLM Agent)
+- **What it does:** Creates an intelligent Agent using LangChain.
 - **Input/Output:**
-  - Nó cung cấp cho LLM 2 công cụ (tools): `semantic_search_papers` (gọi hàm `search` của index) và `lookup_paper` (gọi hàm `lookup`).
-  - LLM sẽ tự quyết định xem với câu hỏi của người dùng, nó nên dùng tool nào. Kết quả từ tool sẽ là Input để LLM tổng hợp ra Output cuối cùng.
-- **Ý nghĩa:** System Prompt ép LLM: *"Use tools before answering factual questions"* (Phải dùng tool trước khi trả lời sự kiện thực tế). Điều này ngăn chặn tình trạng ảo giác (hallucination) của AI.
+  - It provides the LLM with two tools: `semantic_search_papers` (which calls the index's `search` method) and `lookup_paper` (which calls `lookup`).
+  - The LLM decides which tool to use based on the user's question, and the tool's result becomes the input for the LLM to synthesize the final answer.
+- **Significance:** The System Prompt explicitly instructs the LLM: *"Use tools before answering factual questions"*. This strictly grounds the LLM to the database and prevents hallucinations.
 
 ---
 
-## 2. Chốt embedding model, collection naming và metadata
+## 2. Finalizing the Embedding Model, Collection Naming, and Metadata
 
-- **Embedding Model:** Chúng ta chốt sử dụng dòng họ `MiniLM` (ví dụ `all-MiniLM-L6-v2`) vì nó nhỏ, nhẹ, chạy được cục bộ (local) rất nhanh mà vẫn đảm bảo khả năng tìm kiếm ngữ nghĩa tiếng Anh tốt.
-- **Collection Naming (Tên bộ sưu tập):**
-  Trong hàm `_derive_collection_name`, hệ thống đã thiết kế sẵn việc đổi tên linh hoạt:
-  - Dữ liệu sạch ban đầu: `papers-baseline`
-  - Dữ liệu bị làm hỏng: `papers-corrupted`
-  - Dữ liệu đã sửa lỗi: `papers-repaired`
-  - *Ý nghĩa:* Việc tách tên collection giúp chúng ta lưu được cả 3 phiên bản database để so sánh ở CP6 mà không bị ghi đè lên nhau.
-- **Metadata tối thiểu:** Code lấy `paper_id`, `title`, `published`, `authors_joined`, `categories_joined`, và `summary`.
-  - *Ý nghĩa:* Bắt buộc phải có metadata này vì LLM không chỉ cần đọc text, mà file `qa.py` (phần Evaluation) còn dùng code Python cứng để bóc tách thông tin từ metadata (vd: khi hỏi "who authored...", nó bóc đúng trường `authors_joined` để so sánh với Ground Truth).
+- **Embedding Model:** We have configured the system to use OpenAI's `text-embedding-3-small` via the `EMBEDDING_MODEL` environment variable. This provides superior semantic search capabilities using a 1536-dimensional vector space.
+- **Collection Naming:**
+  In the `_derive_collection_name` method, the system uses flexible naming:
+  - Clean baseline data: `papers-baseline`
+  - Corrupted data: `papers-corrupted`
+  - Repaired data: `papers-repaired`
+  - *Significance:* Separating collection names allows us to store all three database versions for comparison in CP6 without overwriting them.
+- **Minimum Metadata:** The code extracts `paper_id`, `title`, `published`, `authors_joined`, `categories_joined`, and `summary`.
+  - *Significance:* This metadata is mandatory because the evaluation system (`qa.py`) uses strict Python code to extract information from the metadata (e.g., when asked "who authored...", it directly checks the `authors_joined` field against the Ground Truth).
 
 ---
 
-## 3. Chuẩn bị smoke query/lookup
+## 3. Preparing Smoke Queries/Lookups
 
-Dựa vào hàm `_extract_answer` trong `qa.py`, chúng ta chuẩn bị sẵn các câu truy vấn mẫu (smoke query) sau khi index xong:
-- **Câu hỏi Summary:** `What is the summary of '{title}'?`
-- **Câu hỏi Authors:** `Who authored '{title}'?`
-- **Câu hỏi Date:** `When was '{title}' published?`
-- **Câu hỏi Categories:** `What categories does '{title}' belong to?`
+Based on the `_extract_answer` function in `qa.py`, we prepare the following sample queries (smoke queries) to run after indexing:
+- **Summary Question:** `What is the summary of '{title}'?`
+- **Authors Question:** `Who authored '{title}'?`
+- **Date Question:** `When was '{title}' published?`
+- **Categories Question:** `What categories does '{title}' belong to?`
 
-*Ý nghĩa:* Đây là các câu hỏi "mồi" để chạy thử. Nếu database trả về kết quả đúng với những câu này, chứng tỏ luồng (pipeline) từ Raw -> Clean -> Embeddings đã thông suốt và sẵn sàng cho việc Đánh giá (Evaluation) tự động.
+*Significance:* These are "primer" questions for testing. If the database returns the correct results for these, it proves that the pipeline from Raw -> Clean -> Embeddings is functioning correctly and is ready for automated Evaluation.
