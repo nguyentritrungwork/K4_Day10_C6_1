@@ -1,9 +1,7 @@
-# Task AI — Role 4 (Eval & Observe) CP0
+# Task AI — Explanation of Role 4 (RAG & Agent)
 
 ## Tasks
-- [x] Read the rules and role assignment.
-- [x] Create a dedicated git branch `feature/role4-cp0`.
-- [x] Review existing evaluation files (`testset.py`, `metrics.py`, `qa.py`).
-- [x] Review existing observability files (`quality.py`, `reporting.py`).
-- [x] Present implementation plan for CP0 deliverables (Question design, artifact lists, signals definition).
-- [ ] Wait for user confirmation (`t=true`).
+- [x] Read `task.md` (user said: "result: Explain the role 4 what need to do")
+- [x] Review screenshot and HTML to understand Role 4 responsibilities
+- [x] Write explanation of Role 4 across all checkpoints to `result.md`
+- [x] Commit and log changes
