@@ -1,7 +1,7 @@
 {
   "backend": "chroma",
-  "embedding_model": "text-embedding-3-small",
-  "persist_path": "D:\\K4_Day10_C6_1\\data\\chroma",
+  "embedding_model": "all-MiniLM-L6-v2",
+  "persist_path": "E:\\26.AI-VIN\\thuc_hanh\\K4_Day10_C6_1\\data\\chroma",
   "collection_name": "papers-baseline",
   "documents": [
     {
