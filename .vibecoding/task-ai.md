@@ -1,9 +1,6 @@
-# Task AI — Verify Pre-Index Data Structure
+# Task AI — Translate result.md to Vietnamese
 
 ## Tasks
-- [x] Read `task.md` (user requested verification of clean dataframe and `text_for_embedding`).
-- [x] Fetch source records and run the cleaning pipeline to generate actual data samples.
-- [x] Inspect the real `text_for_embedding` to ensure it contains Title/Summary and avoids repetition.
-- [x] Confirm the clean dataframe possesses `paper_id`, `title`, `content`, and required index metadata.
-- [x] Document findings in `result.md` in English (adhering to Rule #1).
-- [ ] Wait for user confirmation (`t=true`) if any further implementation is needed.
+- [x] Read the user's request to translate `result.md` back to Vietnamese.
+- [x] Translate the contents of `result.md` to Vietnamese while keeping the technical details accurate (e.g., mentioning `text-embedding-3-small`).
+- [x] Update `task-ai.md` and commit the change.
