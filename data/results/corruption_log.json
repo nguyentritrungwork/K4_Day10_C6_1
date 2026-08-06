@@ -1,21 +1,59 @@
 {
-    "dropped_indices": [
-        0,
-        1
-    ],
-    "blank_summary_indices": [
-        0
-    ],
-    "noise_injected_indices": [
-        1
-    ],
-    "truncated_title_indices": [
-        2
-    ],
-    "stale_date_indices": [
-        3
-    ],
-    "duplicated_indices": [
-        4
+    "corruptions": [
+        {
+            "type": "drop_latest",
+            "record_ids": [
+                "10-1111-exsy-70341",
+                "10-2118-234689-pa"
+            ],
+            "parameter": "dropped 2 rows",
+            "before": 24,
+            "after": 22
+        },
+        {
+            "type": "blank_summary",
+            "record_ids": [
+                "10-1007-s10278-026-02086-9"
+            ],
+            "parameter": "set summary to empty string",
+            "before": 1869,
+            "after": 0
+        },
+        {
+            "type": "inject_noise",
+            "record_ids": [
+                "10-21203-rs-3-rs-10178277-v1"
+            ],
+            "parameter": "added ' CORRUPTED_NOISE_123 '",
+            "before": 1945,
+            "after": 1966
+        },
+        {
+            "type": "truncate_title",
+            "record_ids": [
+                "10-2196-preprints-106157"
+            ],
+            "parameter": "truncated to 15 chars",
+            "before": 109,
+            "after": 15
+        },
+        {
+            "type": "stale_date",
+            "record_ids": [
+                "10-3390-buildings16132637"
+            ],
+            "parameter": "changed year to 1999",
+            "before": "2026-07-02T00:00:00Z",
+            "after": "1999-07-02T00:00:00Z"
+        },
+        {
+            "type": "duplicate_row",
+            "record_ids": [
+                "10-21079-11681-50309"
+            ],
+            "parameter": "duplicated 1 row",
+            "before": 22,
+            "after": 23
+        }
     ]
 }

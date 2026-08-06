@@ -20,6 +20,12 @@ def _render_table(payload: dict[str, Any]) -> str:
     return "\n".join(rows)
 
 
+def _artifact_status(path_value: Any) -> str:
+    if not path_value:
+        return "missing path"
+    return "exists" if Path(str(path_value)).exists() else "missing"
+
+
 def generate_phase1_report(
     report_path,
     source_summary: dict[str, Any],
@@ -51,6 +57,20 @@ def generate_phase1_report(
             "embeddings_manifest": source_summary.get("embedding_manifest"),
         }),
         "",
+        "## Artifact Checklist",
+        "",
+        _render_table({
+            "raw_records_path": _artifact_status(source_summary.get("raw_records_path")),
+            "clean_csv": _artifact_status(source_summary.get("clean_csv")),
+            "clean_json": _artifact_status(source_summary.get("clean_json")),
+            "evaluation_test_set": _artifact_status(source_summary.get("test_set_path")),
+            "embeddings_manifest": _artifact_status(source_summary.get("embedding_manifest")),
+            "baseline_metrics": _artifact_status(source_summary.get("baseline_metrics_path")),
+            "baseline_answers": _artifact_status(source_summary.get("baseline_answers_path")),
+            "quality_report": _artifact_status(source_summary.get("quality_report_path")),
+            "freshness_report": _artifact_status(source_summary.get("freshness_report_path")),
+        }),
+        "",
         "## Retrieval & QA Metrics",
         "",
         _render_table({
@@ -73,6 +93,7 @@ def generate_phase1_report(
             "duplicate_paper_id_rows": quality.get("signals", {}).get("paper_id_duplicate_rows"),
             "summary_missing_rows": quality.get("signals", {}).get("summary_missing"),
             "text_for_embedding_missing": quality.get("signals", {}).get("text_for_embedding_missing"),
+            "stale_rows": quality.get("signals", {}).get("stale_rows"),
         }),
         "",
         "## Freshness Summary",
@@ -87,11 +108,23 @@ def generate_phase1_report(
             "is_fresh": freshness.get("is_fresh"),
         }),
         "",
+        "## Embedding Index Audit",
+        "",
+        _render_table({
+            "embedding_manifest_documents": source_summary.get("embedding_manifest_documents"),
+            "embedding_manifest_collection": source_summary.get("embedding_manifest_collection"),
+            "embedding_manifest_model": source_summary.get("embedding_manifest_model"),
+            "chroma_collection": source_summary.get("chroma_collection"),
+            "chroma_document_count": source_summary.get("chroma_document_count"),
+            "counts_match_clean_data": source_summary.get("embedding_counts_match"),
+            "audit_warning": source_summary.get("embedding_audit_warning"),
+        }),
+        "",
         "## Recommendations",
         "",
-        "- Review the baseline quality and freshness signals to confirm whether the clean dataset is production-ready.",
+        "- Treat this report as the baseline evidence pack for comparison with corrupted and repaired runs.",
         "- Use the same `data/eval/test_set.json` for baseline, corrupted, and repaired evaluations to keep comparisons valid.",
-        "- Investigate any failed quality checks before progressing to corruption and repair flows.",
+        "- Regenerate embedding artifacts if manifest paths or model names do not match the current project settings.",
         "",
     ]
 
