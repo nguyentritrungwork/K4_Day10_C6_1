@@ -1,0 +1,21 @@
+{
+    "dropped_indices": [
+        0,
+        1
+    ],
+    "blank_summary_indices": [
+        0
+    ],
+    "noise_injected_indices": [
+        1
+    ],
+    "truncated_title_indices": [
+        2
+    ],
+    "stale_date_indices": [
+        3
+    ],
+    "duplicated_indices": [
+        4
+    ]
+}
