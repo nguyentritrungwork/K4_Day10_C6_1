@@ -1,0 +1,47 @@
+{
+  "checkpoint": 5,
+  "role": "Role 6 - Observability Owner",
+  "status": "completed",
+  "artifacts_checked": {
+    "corruption_log": "data/results/corruption_log.json",
+    "corrupted_quality": "data/quality/corrupted_quality.json",
+    "corrupted_freshness": "data/quality/corrupted_freshness.json",
+    "corrupted_metrics": "data/results/corrupted_metrics.json",
+    "corrupted_answers": "data/results/corrupted_answers.json",
+    "comparison_report": "data/reports/corruption_report.md"
+  },
+  "quality_delta": {
+    "baseline_total_rows": 24,
+    "corrupted_total_rows": 23,
+    "baseline_failed_checks": 0,
+    "corrupted_failed_checks": 3,
+    "corrupted_is_valid": false,
+    "paper_id_duplicate_rows": 2,
+    "summary_missing": 1,
+    "short_summary_rows": 1,
+    "text_for_embedding_missing": 0
+  },
+  "freshness_observation": {
+    "oldest_published": "1999-07-02T00:00:00+00:00",
+    "stale_rows": 0,
+    "is_fresh": true,
+    "note": "oldest_published reflects stale_date, but stale_rows remains 0 because the check uses age_days rather than recomputing from changed published."
+  },
+  "metric_impact": {
+    "retrieval_hit_rate_delta": 0.0,
+    "mean_token_f1_delta": -0.0667,
+    "judge_accuracy_delta": -0.0667,
+    "mean_judge_score_delta": -0.2667
+  },
+  "key_case": {
+    "id": "q12",
+    "paper_id": "10-3390-buildings16132637",
+    "corruption_type": "stale_date",
+    "ground_truth": "2026-07-02T00:00:00Z",
+    "corrupted_answer": "1999-07-02T00:00:00Z",
+    "retrieval_hit": true,
+    "token_f1": 0.0,
+    "judge_score": 1,
+    "judge_correct": false
+  }
+}

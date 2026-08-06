@@ -22,7 +22,7 @@ Trong nhóm 6 người, tôi đảm nhiệm vai trò 5: Evaluation Owner. Phạm
 | Evaluation test set | `data/eval/test_set.json` | Cleaned dataset đã ổn định | 15 câu hỏi cố định cho baseline/corrupted/repaired | Hoàn thành |
 | Test set summary | `data/eval/checkpoint2_role5_testset_summary.md` | `test_set.json` | Báo cáo cấu trúc test set và rule sử dụng | Hoàn thành |
 | Baseline evaluation check | `data/results/baseline_metrics.json`, `data/results/baseline_answers.json` | Baseline index và test set | Báo cáo baseline evaluation | Hoàn thành |
-| Corrupted impact analysis | `data/results/corruption_log.json`, `data/clean/papers_clean_corrupted.json` | Corrupted artifacts | Manual impact estimate và case bị ảnh hưởng | Một phần, chờ official corrupted metrics/answers |
+| Corrupted impact analysis | `data/results/corrupted_metrics.json`, `data/results/corrupted_answers.json`, `data/results/corruption_log.json` | Corrupted artifacts và official metrics | Official corrupted evaluation summary và case bị ảnh hưởng | Hoàn thành |
 
 ## 3. Kết quả theo vai trò
 
@@ -85,12 +85,12 @@ data/clean/papers_clean_corrupted.json
 
 ## 6. Một lỗi hoặc blocker đã xử lý
 
-- Triệu chứng/blocker: ở checkpoint 5 chưa có `data/results/corrupted_metrics.json` và `data/results/corrupted_answers.json`.
-- Bước tái hiện: kiểm tra thư mục `data/results/` chỉ thấy baseline metrics/answers và corruption log, chưa thấy corrupted metrics/answers.
-- Nguyên nhân gốc: `src/pipelines/corruption_flow.py` vẫn chưa sinh official corrupted evaluation output.
-- Cách xử lý tạm thời: tôi phân tích trực tiếp từ corrupted artifacts, corruption log và test set cố định để tạo manual estimate.
-- Cách xác minh: artifact `data/eval/checkpoint5_role5_corrupted_manual_metrics.json` và `data/eval/checkpoint5_role5_corrupted_evaluation_summary.md`.
-- Điều học được: evaluation owner cần phân biệt rõ giữa official metrics do pipeline tạo và manual analysis dùng để hỗ trợ debug/giải thích.
+- Triệu chứng/blocker ban đầu: ở checkpoint 5 từng thiếu `data/results/corrupted_metrics.json` và `data/results/corrupted_answers.json`.
+- Bước tái hiện: kiểm tra thư mục `data/results/` trước đó chỉ thấy baseline metrics/answers và corruption log.
+- Nguyên nhân gốc: `corruption_flow.py` ở thời điểm trước chưa sinh official corrupted evaluation output.
+- Cách xử lý: sau khi nhóm cập nhật flow, tôi kiểm tra lại official `corrupted_metrics.json` và `corrupted_answers.json`, sau đó cập nhật summary checkpoint 5.
+- Cách xác minh: artifact `data/eval/checkpoint5_role5_corrupted_official_metrics.json` và `data/eval/checkpoint5_role5_corrupted_evaluation_summary.md`.
+- Điều học được: evaluation owner cần cập nhật báo cáo theo artifact mới nhất và phân biệt rõ giữa phân tích tạm thời với official metrics từ pipeline.
 
 ## 7. Hiểu biết về luồng end-to-end
 
@@ -104,12 +104,12 @@ Quality checks tập trung vào tính hợp lệ của dữ liệu như thiếu 
 
 | Metric/signal | Baseline | Corrupted | Repaired | Nhận xét cá nhân |
 | --- | ---: | ---: | ---: | --- |
-| `retrieval_hit_rate` | 1.0 | 1.0 manual estimate | Chưa có | Corrupted vẫn còn các document trong test set nên retrieval dự kiến vẫn hit |
-| `mean_token_f1` | 1.0 | 0.9333 manual estimate | Chưa có | Giảm do case `q12` bị stale date |
-| `judge_accuracy` | 1.0 | 0.9333 manual estimate | Chưa có | Một câu date bị sai do corrupted published date |
-| `mean_judge_score` | 5.0 | 4.7333 manual estimate | Chưa có | Điểm trung bình giảm nhẹ |
-| Quality checks | Baseline có artifact | Chưa có official corrupted quality trong phần của tôi | Chưa có | Cần vai trò observability/pipeline bổ sung |
-| Freshness status | Có freshness report baseline | Corrupted có stale date trong log | Chưa có | Stale date là corruption ảnh hưởng rõ tới câu hỏi date |
+| `retrieval_hit_rate` | 1.0 | 1.0 | 1.0 | Corrupted vẫn retrieve đúng document, nên hit rate không giảm |
+| `mean_token_f1` | 1.0 | 0.9333 | 1.0 | Giảm do case `q12` bị stale date, repaired phục hồi |
+| `judge_accuracy` | 1.0 | 0.9333 | 1.0 | Một câu date bị sai ở corrupted, repaired đúng lại |
+| `mean_judge_score` | 5.0 | 4.7333 | 5.0 | Điểm trung bình giảm nhẹ rồi phục hồi |
+| Quality checks | Valid | Invalid, 3 failed checks | Valid | Corrupted fail duplicate/summary checks, repaired pass lại |
+| Freshness status | Fresh | Có oldest published năm 1999 do stale date | Fresh | Stale date ảnh hưởng rõ tới câu hỏi date |
 
 ### Kết luận từ số liệu
 
@@ -117,8 +117,8 @@ Chuỗi nguyên nhân - bằng chứng rõ nhất:
 
 1. `stale_date` trên paper `10-3390-buildings16132637` làm `published` đổi từ `2026-07-02T00:00:00Z` sang `1999-07-02T00:00:00Z`.
 2. Câu `q12` trong test set hỏi ngày publish của đúng paper này.
-3. Vì vậy answer ở corrupted state dự kiến trả về ngày 1999, khác ground truth baseline 2026.
-4. Manual estimate cho thấy `mean_token_f1`, `judge_accuracy`, `mean_judge_score` giảm so với baseline.
+3. Official `corrupted_answers.json` cho thấy answer của `q12` là `1999-07-02T00:00:00Z`, khác ground truth baseline `2026-07-02T00:00:00Z`.
+4. Official `corrupted_metrics.json` cho thấy `mean_token_f1`, `judge_accuracy`, `mean_judge_score` giảm so với baseline.
 
 Kết quả khác kỳ vọng: một số corruption như drop latest, blank summary, truncate title chưa ảnh hưởng trực tiếp tới test set hiện tại vì các record đó không nằm trong 5 paper được chọn, hoặc câu hỏi vẫn lookup được theo title. Điều này cho thấy test set nên được thiết kế bao phủ cả record dự kiến bị corrupt nếu muốn chứng minh impact mạnh hơn.
 
@@ -132,7 +132,7 @@ Kết quả khác kỳ vọng: một số corruption như drop latest, blank sum
 
 ### Nếu có thêm thời gian
 
-Tôi sẽ mở rộng test set để bao phủ nhiều loại corruption hơn, ví dụ thêm câu hỏi cho record bị blank summary, truncate title và dropped record. Sau đó so sánh official `corrupted_metrics.json` và `repaired_metrics.json` để đánh giá rõ hơn mức độ phục hồi sau repair.
+Tôi sẽ mở rộng test set để bao phủ nhiều loại corruption hơn, ví dụ thêm câu hỏi cho record bị blank summary, truncate title và dropped record. Khi đó phần so sánh `corrupted_metrics.json` và `repaired_metrics.json` sẽ phản ánh nhiều kiểu lỗi dữ liệu hơn, không chỉ stale date.
 
 ## 10. Cam kết của thành viên
 

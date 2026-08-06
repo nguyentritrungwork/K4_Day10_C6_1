@@ -1,0 +1,49 @@
+{
+  "source": "official corrupted evaluation artifacts",
+  "test_set_path": "data/eval/test_set.json",
+  "baseline_metrics_path": "data/results/baseline_metrics.json",
+  "corrupted_metrics_path": "data/results/corrupted_metrics.json",
+  "corrupted_answers_path": "data/results/corrupted_answers.json",
+  "corruption_log_path": "data/results/corruption_log.json",
+  "baseline": {
+    "samples": 15,
+    "retrieval_hit_rate": 1.0,
+    "mean_token_f1": 1.0,
+    "judge_accuracy": 1.0,
+    "mean_judge_score": 5.0
+  },
+  "corrupted": {
+    "samples": 15,
+    "retrieval_hit_rate": 1.0,
+    "mean_token_f1": 0.9333333333333333,
+    "judge_accuracy": 0.9333333333333333,
+    "mean_judge_score": 4.733333333333333
+  },
+  "delta_vs_baseline": {
+    "retrieval_hit_rate": 0.0,
+    "mean_token_f1": -0.0666666666666667,
+    "judge_accuracy": -0.0666666666666667,
+    "mean_judge_score": -0.2666666666666666
+  },
+  "answer_counts": {
+    "test_samples": 15,
+    "corrupted_answers": 15,
+    "retrieval_hits": 15,
+    "retrieval_misses": 0,
+    "failed_judge_cases": 1
+  },
+  "impacted_cases": [
+    {
+      "id": "q12",
+      "question_type": "date",
+      "paper_id": "10-3390-buildings16132637",
+      "ground_truth": "2026-07-02T00:00:00Z",
+      "corrupted_answer": "1999-07-02T00:00:00Z",
+      "retrieval_hit": true,
+      "token_f1": 0.0,
+      "judge_score": 1,
+      "judge_correct": false,
+      "corruption_type": "stale_date"
+    }
+  ]
+}
