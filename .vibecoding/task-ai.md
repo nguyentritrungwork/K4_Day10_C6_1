@@ -1,8 +1,9 @@
-# Task AI — Merge Branch to Main
+# Task AI — Verify Pre-Index Data Structure
 
 ## Tasks
-- [x] Read `task.md` (user requested to merge their branch to main and stay on main).
-- [x] Commit current pending changes (`task.md`).
-- [x] Checkout `main` branch.
-- [x] Merge `feature/role4-cp0` into `main`.
-- [x] Update logs.
+- [x] Read `task.md` (user requested verification of clean dataframe and `text_for_embedding`).
+- [x] Fetch source records and run the cleaning pipeline to generate actual data samples.
+- [x] Inspect the real `text_for_embedding` to ensure it contains Title/Summary and avoids repetition.
+- [x] Confirm the clean dataframe possesses `paper_id`, `title`, `content`, and required index metadata.
+- [x] Document findings in `result.md` in English (adhering to Rule #1).
+- [ ] Wait for user confirmation (`t=true`) if any further implementation is needed.
