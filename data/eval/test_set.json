@@ -1,0 +1,137 @@
+[
+  {
+    "id": "q1",
+    "question_type": "summary",
+    "question": "What is the main summary of 'Retrieval-Augmented Generation (RAG), Generative AI, and Agentic AI Governance: An Integrated Enterprise Governance Prioritization Architecture'?",
+    "ground_truth": "Abstract Enterprise adoption of artificial intelligence (AI) systems, including Generative AI (GenAI), Retrieval-Augmented Generation (RAG), and agentic AI, is advancing faster than many organizations can adapt their governance, audit, cybersecurity, and executive oversight practices.",
+    "ground_truth_doc_ids": [
+      "10-21203-rs-3-rs-10012178-v1"
+    ]
+  },
+  {
+    "id": "q2",
+    "question_type": "authors",
+    "question": "Who authored 'Retrieval-Augmented Generation (RAG), Generative AI, and Agentic AI Governance: An Integrated Enterprise Governance Prioritization Architecture'?",
+    "ground_truth": "Audrey Rah, Sven Hahues",
+    "ground_truth_doc_ids": [
+      "10-21203-rs-3-rs-10012178-v1"
+    ]
+  },
+  {
+    "id": "q3",
+    "question_type": "date",
+    "question": "When was 'Retrieval-Augmented Generation (RAG), Generative AI, and Agentic AI Governance: An Integrated Enterprise Governance Prioritization Architecture' published?",
+    "ground_truth": "2026-06-15T00:00:00Z",
+    "ground_truth_doc_ids": [
+      "10-21203-rs-3-rs-10012178-v1"
+    ]
+  },
+  {
+    "id": "q4",
+    "question_type": "summary",
+    "question": "What is the main summary of '0346 Retrieval Augmented Generation Improves Large Language Model Performance in Sleep Medicine'?",
+    "ground_truth": "Abstract Introduction While Large Language Models (LLMs) offer generative capabilities, generic models often lack domain-specific grounding, leading to hallucinations in high-stakes contexts.",
+    "ground_truth_doc_ids": [
+      "10-1093-sleep-zsag091-0346"
+    ]
+  },
+  {
+    "id": "q5",
+    "question_type": "authors",
+    "question": "Who authored '0346 Retrieval Augmented Generation Improves Large Language Model Performance in Sleep Medicine'?",
+    "ground_truth": "Joseph Cheung, Pengze Li, Anshum Patel, SaiKrishna Vallamchetla, Het Contractor, Hayden Heninger, Cui Tao",
+    "ground_truth_doc_ids": [
+      "10-1093-sleep-zsag091-0346"
+    ]
+  },
+  {
+    "id": "q6",
+    "question_type": "date",
+    "question": "When was '0346 Retrieval Augmented Generation Improves Large Language Model Performance in Sleep Medicine' published?",
+    "ground_truth": "2026-05-08T00:00:00Z",
+    "ground_truth_doc_ids": [
+      "10-1093-sleep-zsag091-0346"
+    ]
+  },
+  {
+    "id": "q7",
+    "question_type": "summary",
+    "question": "What is the main summary of 'An Exploratory Study of Agentic Retrieval Augmented Generation for Mental Health Oriented Language Models'?",
+    "ground_truth": "Mental health conditions affect over one billion individuals globally and remain challenging to assess accurately due to fragmented clinical data and subjective evaluation methods.",
+    "ground_truth_doc_ids": [
+      "10-32473-flairs-39-1-141782"
+    ]
+  },
+  {
+    "id": "q8",
+    "question_type": "authors",
+    "question": "Who authored 'An Exploratory Study of Agentic Retrieval Augmented Generation for Mental Health Oriented Language Models'?",
+    "ground_truth": "Khoa Pham, Jiacheng Li, Hassan S. Al Khatib, Shahram Rahimi, Noorbakhsh Amiri Golilarz, Andy Perkins",
+    "ground_truth_doc_ids": [
+      "10-32473-flairs-39-1-141782"
+    ]
+  },
+  {
+    "id": "q9",
+    "question_type": "date",
+    "question": "When was 'An Exploratory Study of Agentic Retrieval Augmented Generation for Mental Health Oriented Language Models' published?",
+    "ground_truth": "2026-05-06T00:00:00Z",
+    "ground_truth_doc_ids": [
+      "10-32473-flairs-39-1-141782"
+    ]
+  },
+  {
+    "id": "q10",
+    "question_type": "summary",
+    "question": "What is the main summary of 'An Agentic AI System for Roof Design Compliance Using Computer Vision, Retrieval-Augmented Generation and Large Language Models'?",
+    "ground_truth": "Designers, engineers, and building officials face increasing pressure to accelerate and improve the accuracy of design review for buildings and infrastructure.",
+    "ground_truth_doc_ids": [
+      "10-3390-buildings16132637"
+    ]
+  },
+  {
+    "id": "q11",
+    "question_type": "authors",
+    "question": "Who authored 'An Agentic AI System for Roof Design Compliance Using Computer Vision, Retrieval-Augmented Generation and Large Language Models'?",
+    "ground_truth": "Nawari O. Nawari, Oluwatoyin O. Lawal",
+    "ground_truth_doc_ids": [
+      "10-3390-buildings16132637"
+    ]
+  },
+  {
+    "id": "q12",
+    "question_type": "date",
+    "question": "When was 'An Agentic AI System for Roof Design Compliance Using Computer Vision, Retrieval-Augmented Generation and Large Language Models' published?",
+    "ground_truth": "2026-07-02T00:00:00Z",
+    "ground_truth_doc_ids": [
+      "10-3390-buildings16132637"
+    ]
+  },
+  {
+    "id": "q13",
+    "question_type": "summary",
+    "question": "What is the main summary of 'Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis'?",
+    "ground_truth": "Abstract Time-series foundation models and retrieval-based augmentation have recently emerged as relevant tools for financial forecasting, yet it remains unclear when explicit historical retrieval helps a pre-trained probabilistic forecaster in noisy equity settings.",
+    "ground_truth_doc_ids": [
+      "10-21203-rs-3-rs-10178277-v1"
+    ]
+  },
+  {
+    "id": "q14",
+    "question_type": "authors",
+    "question": "Who authored 'Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis'?",
+    "ground_truth": "Novanto Yudistira, Yanuar Putra Kharisma Adhiyasa",
+    "ground_truth_doc_ids": [
+      "10-21203-rs-3-rs-10178277-v1"
+    ]
+  },
+  {
+    "id": "q15",
+    "question_type": "date",
+    "question": "When was 'Retrieval-Augmented Large-Language-Model-Based Time-Series Forecasting for Cross-Market Equity Analysis' published?",
+    "ground_truth": "2026-07-10T00:00:00Z",
+    "ground_truth_doc_ids": [
+      "10-21203-rs-3-rs-10178277-v1"
+    ]
+  }
+]

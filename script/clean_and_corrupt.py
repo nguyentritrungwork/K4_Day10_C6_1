@@ -25,9 +25,23 @@ def main():
     df_clean = build_clean_dataframe(records, run_date)
     
     print(f"   => Dữ liệu đã làm sạch: {len(df_clean)} bản ghi.")
+    
+    # 1. Xác minh không còn text_for_embedding rỗng và paper_id bị trùng.
+    duplicate_count = df_clean['paper_id'].duplicated().sum()
+    empty_text_count = df_clean['text_for_embedding'].isna().sum() + (df_clean['text_for_embedding'] == '').sum()
+    assert duplicate_count == 0, f"Lỗi: Còn {duplicate_count} paper_id bị trùng!"
+    assert empty_text_count == 0, f"Lỗi: Còn {empty_text_count} text_for_embedding rỗng!"
+    print("   => Xác minh (Role 3): 0 trùng lặp paper_id, 0 text_for_embedding rỗng.")
+    
+    # 2. Rà soát row được chọn vào test set để đảm bảo nội dung sạch.
+    print("   => Rà soát ngẫu nhiên 2 row chuẩn bị cho Test Set:")
+    for _, row in df_clean.head(2).iterrows():
+        print(f"      - ID: {row['paper_id']} | Title: {row['title'][:50]}...")
+    
+    # 3. Sửa schema contract: Đã chuyển sang ghi json với lines=True ở bước dưới.
     settings.paths.clean_csv.parent.mkdir(parents=True, exist_ok=True)
     df_clean.to_csv(settings.paths.clean_csv, index=False)
-    df_clean.to_json(settings.paths.clean_json, orient='records', force_ascii=False, indent=4)
+    df_clean.to_json(settings.paths.clean_json, orient='records', force_ascii=False, lines=True)
     print(f"   => Đã lưu dữ liệu làm sạch vào {settings.paths.clean_csv} và {settings.paths.clean_json}")
 
     print("4. Bắt đầu giả lập lỗi dữ liệu (corruption)...")
@@ -36,7 +50,7 @@ def main():
     
     print(f"   => Dữ liệu sau khi làm lỗi: {len(df_corrupted)} bản ghi.")
     df_corrupted.to_csv(settings.paths.corrupted_clean_csv, index=False)
-    df_corrupted.to_json(settings.paths.corrupted_clean_json, orient='records', force_ascii=False, indent=4)
+    df_corrupted.to_json(settings.paths.corrupted_clean_json, orient='records', force_ascii=False, lines=True)
     print(f"   => Đã lưu dữ liệu làm lỗi vào {settings.paths.corrupted_clean_csv} và {settings.paths.corrupted_clean_json}")
     print(f"   => Log corruption được lưu tại {log_path}")
 
