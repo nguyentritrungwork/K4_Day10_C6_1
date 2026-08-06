@@ -1,0 +1,70 @@
+{
+  "report_name": "embedding_audit.json",
+  "checkpoint": "CP2",
+  "role": "Role 6 - Observability owner",
+  "status": "passed_with_warning",
+  "clean_dataset": {
+    "path": "data/clean/papers_clean.json",
+    "row_count": 24
+  },
+  "embedding_manifest": {
+    "path": "data/embeddings/papers_embeddings.json",
+    "exists": true,
+    "backend": "chroma",
+    "embedding_model": "all-MiniLM-L6-v2",
+    "collection_name": "papers-baseline",
+    "document_count": 24,
+    "document_count_matches_clean_rows": true,
+    "required_document_keys_present": true,
+    "required_metadata_keys_present": true
+  },
+  "chroma_collection": {
+    "settings_persist_path": "E:/Downloads/Learn_IT/VinUni/Unit_10/K4_Day10_C6_1/data/chroma",
+    "collections": [
+      {
+        "name": "papers-baseline",
+        "count": 24
+      }
+    ],
+    "baseline_collection_exists": true,
+    "baseline_collection_count_matches_manifest": true
+  },
+  "baseline_quality_signals": {
+    "row_count": 24,
+    "paper_id_missing": 0,
+    "paper_id_duplicate_rows": 0,
+    "title_missing": 0,
+    "summary_missing": 0,
+    "short_summary_rows": 0,
+    "text_for_embedding_missing": 0,
+    "age_days_missing": 0,
+    "negative_age_rows": 0,
+    "stale_rows": 0,
+    "freshness_threshold_days": 180
+  },
+  "baseline_freshness_signals": {
+    "latest_published": "2026-08-01T00:00:00+00:00",
+    "oldest_published": "2026-02-12T00:00:00+00:00",
+    "stale_rows": 0,
+    "missing_published_rows": 0,
+    "missing_age_days_rows": 0,
+    "is_fresh": true
+  },
+  "warnings": [
+    {
+      "name": "manifest_persist_path_differs_from_current_settings",
+      "manifest_value": "E:/26.AI-VIN/thuc_hanh/K4_Day10_C6_1/data/chroma",
+      "settings_value": "E:/Downloads/Learn_IT/VinUni/Unit_10/K4_Day10_C6_1/data/chroma",
+      "impact": "The current local Chroma DB is valid, but the manifest path should be regenerated or normalized before final submission for reproducibility."
+    }
+  ],
+  "next_checkpoint_inputs": {
+    "phase1_report_needs": [
+      "source summary",
+      "baseline metrics",
+      "baseline quality signals",
+      "freshness signals",
+      "embedding manifest and collection count"
+    ]
+  }
+}
