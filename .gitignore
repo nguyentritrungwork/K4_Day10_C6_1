@@ -4,4 +4,6 @@ lab.txt
 .venv/
 src/*.egg-info/
 lab/
-**/__pycache__/
+**/__pycache__
+.vibecoding/
+.ai-log/
