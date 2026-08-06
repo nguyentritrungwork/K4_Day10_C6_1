@@ -1,7 +1,7 @@
-# Task AI — Explanation of Role 4 (RAG & Agent)
+# Task AI — Explain Role 4 Code for CP0
 
 ## Tasks
-- [x] Read `task.md` (user said: "result: Explain the role 4 what need to do")
-- [x] Review screenshot and HTML to understand Role 4 responsibilities
-- [x] Write explanation of Role 4 across all checkpoints to `result.md`
-- [x] Commit and log changes
+- [x] Read `task.md` (user requested code explanation for Role 4 CP0 tasks)
+- [x] Read `index.py`, `embeddings.py`, and `agent.py` in `src/retrieval`.
+- [x] Write detailed technical explanation and code analysis to `result.md`.
+- [x] Commit and log changes.
