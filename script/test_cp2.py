@@ -1,6 +1,7 @@
 import sys
 from pathlib import Path
 sys.path.append(str(Path(__file__).parent.parent / "src"))
+sys.stdout.reconfigure(encoding='utf-8')
 
 import pandas as pd
 from core.config import load_settings
@@ -24,7 +25,7 @@ def main():
     # Chuẩn bị một paper có trong data (ví dụ)
     sample_title = df.iloc[0]["title"]
     
-    print(f"\n[Lookup Test] Tiêu đề: {sample_title}")
+    print(f"\n[Lookup Test] Title: {sample_title}")
     exact_match = index.lookup(sample_title)
     if exact_match:
         print("-> FOUND EXACT MATCH!")

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import Any
+
 from langchain_core.embeddings import Embeddings
 from langchain_google_genai import GoogleGenerativeAIEmbeddings
 from langchain_ollama import OllamaEmbeddings
@@ -8,7 +10,13 @@ from langchain_openai import OpenAIEmbeddings
 from core.config import Settings, normalized_provider
 
 
-def get_embeddings_model(settings: Settings) -> Embeddings:
+def get_embeddings_model(settings: Settings) -> Embeddings | Any:
+    # Support local HuggingFace / MiniLM embeddings
+    if "minilm" in settings.embedding_model.lower() or "sentence-transformers" in settings.embedding_model.lower():
+        from langchain_community.embeddings import HuggingFaceEmbeddings
+
+        return HuggingFaceEmbeddings(model_name=settings.embedding_model)
+
     provider = normalized_provider(settings)
 
     if provider == "gemini":
