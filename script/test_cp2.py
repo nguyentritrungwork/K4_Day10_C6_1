@@ -1,11 +1,15 @@
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).parent.parent / "src"))
+
 import pandas as pd
-from core.config import get_settings
+from core.config import load_settings
 from retrieval.index import LocalEmbeddingIndex
 from retrieval.agent import build_agent, run_agent_question
 
 def main():
     print("=== 1. Load Settings ===")
-    settings = get_settings()
+    settings = load_settings()
     
     print("=== 2. Build Baseline Index ===")
     # Đọc dữ liệu sạch
