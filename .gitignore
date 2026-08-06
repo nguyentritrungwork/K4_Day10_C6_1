@@ -1,5 +1,7 @@
 solution/
 .env
+.env.*
+!.env.example
 lab.txt
 .venv/
 src/*.egg-info/
@@ -8,3 +10,6 @@ lab/
 .vibecoding/
 .ai-log/
 .agents
+*.pem
+*.key
+data/chroma/
