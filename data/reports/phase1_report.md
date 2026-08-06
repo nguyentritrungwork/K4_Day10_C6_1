@@ -12,11 +12,11 @@ This report summarizes the baseline clean-data pipeline, including source ingest
 | max_results | 24 |
 | raw_record_count | 24 |
 | clean_row_count | 24 |
-| raw_records_path | E:\26.AI-VIN\thuc_hanh\K4_Day10_C6_1\data\raw\crossref_records.json |
-| clean_csv | E:\26.AI-VIN\thuc_hanh\K4_Day10_C6_1\data\clean\papers_clean.csv |
-| clean_json | E:\26.AI-VIN\thuc_hanh\K4_Day10_C6_1\data\clean\papers_clean.json |
-| evaluation_test_set | E:\26.AI-VIN\thuc_hanh\K4_Day10_C6_1\data\eval\test_set.json |
-| embeddings_manifest | E:\26.AI-VIN\thuc_hanh\K4_Day10_C6_1\data\embeddings\papers_embeddings.json |
+| raw_records_path | D:\K4_Day10_C6_1\data\raw\crossref_records.json |
+| clean_csv | D:\K4_Day10_C6_1\data\clean\papers_clean.csv |
+| clean_json | D:\K4_Day10_C6_1\data\clean\papers_clean.json |
+| evaluation_test_set | D:\K4_Day10_C6_1\data\eval\test_set.json |
+| embeddings_manifest | D:\K4_Day10_C6_1\data\embeddings\papers_embeddings.json |
 
 ## Artifact Checklist
 
