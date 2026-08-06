@@ -6,13 +6,13 @@
 
 | Thông tin         | Nội dung                  |
 | ------------------ | -------------------------- |
-| Họ và tên       | [Họ và tên]             |
-| MSSV               | [MSSV]                     |
-| Khóa/Lớp         | [K3 hoặc K4]              |
-| Tên nhóm         | [Tên hoặc mã nhóm]     |
-| Vai trò chính    | [Vai trò]                 |
-| Repository         | [Đường dẫn repository] |
-| Ngày hoàn thành | [YYYY-MM-DD]               |
+| Họ và tên       | Trần Đặng Vương Quốc Long  |
+| MSSV               | 2A202601744                |
+| Khóa/Lớp         | [K4]              |
+| Tên nhóm         | [C6_1]     |
+| Vai trò chính    | [Ingestion người phụ trách]                 |
+| Repository         | [K4_Day10_C6_1] |
+| Ngày hoàn thành | [2026/8/6]               |
 
 ## 2. Vai trò và phạm vi công việc
 
@@ -160,5 +160,5 @@ Kết quả nào khác với kỳ vọng ban đầu?
 - [ ] Báo cáo không chứa `.env`, API key, token hoặc secret.
 - [ ] Báo cáo này không phải bản sao nguyên văn của báo cáo nhóm hoặc báo cáo thành viên khác.
 
-**Họ và tên:** [Họ và tên]
+**Họ và tên:** Trần Đặng Vương Quốc Long
 **Ngày xác nhận:** [YYYY-MM-DD]
